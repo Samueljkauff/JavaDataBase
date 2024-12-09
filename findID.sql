@@ -1,0 +1,8 @@
+DELIMITER //
+
+CREATE PROCEDURE findID(IN CustomerName VARCHAR(100), OUT CustomerID INT)
+BEGIN
+	SELECT Customer_ID INTO CustomerID FROM CUSTOMER WHERE CustomerName = Name;
+END //
+
+DELIMITER ;

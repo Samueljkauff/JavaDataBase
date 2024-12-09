@@ -1,0 +1,59 @@
+CREATE TABLE CONTAINER_SHIP (
+ Ship_ID INT PRIMARY KEY,
+ Name VARCHAR(100) NOT NULL,
+ Capacity INT NOT NULL
+);
+CREATE TABLE PORT (
+ Port_Code CHAR(5) PRIMARY KEY,
+ Name VARCHAR(100) NOT NULL,
+ Location VARCHAR(100),
+ Daily_Port_Fee DECIMAL(10, 2) NOT NULL
+);
+CREATE TABLE CONTAINER (
+ Container_Serial_Number CHAR(10) PRIMARY KEY,
+ Weight DECIMAL(5, 2) NOT NULL,
+ Contents_Description VARCHAR(255)
+);
+CREATE TABLE CUSTOMER (
+ Customer_ID INT PRIMARY KEY AUTO_INCREMENT,
+ Name VARCHAR(100) NOT NULL,
+ Contact_Information VARCHAR(255),
+ Billing_Details VARCHAR(255)
+);
+CREATE TABLE SAILING_SCHEDULE (
+ Schedule_ID INT PRIMARY KEY AUTO_INCREMENT,
+ Ship_ID INT,
+ Port_Code CHAR(5),
+ Arrival_Date DATE,
+ Departure_Date DATE,
+ FOREIGN KEY (Ship_ID) REFERENCES CONTAINER_SHIP(Ship_ID),
+ FOREIGN KEY (Port_Code) REFERENCES PORT(Port_Code)
+);
+CREATE TABLE CONTAINER_TRANSPORT (
+ Transport_ID INT PRIMARY KEY AUTO_INCREMENT,
+ Container_Serial_Number CHAR(10),
+ Origin_Port_Code CHAR(5),
+ Destination_Port_Code CHAR(5),
+ Delivery_Date DATE,
+ FOREIGN KEY (Container_Serial_Number) REFERENCES
+CONTAINER(Container_Serial_Number),
+ FOREIGN KEY (Origin_Port_Code) REFERENCES PORT(Port_Code),
+ FOREIGN KEY (Destination_Port_Code) REFERENCES PORT(Port_Code)
+);
+CREATE TABLE CUSTOMER_ORDERS (
+ Order_ID INT PRIMARY KEY AUTO_INCREMENT,
+ Customer_ID INT,
+ Container_Serial_Number CHAR(10),
+ Negotiated_Fee DECIMAL(10, 2),
+ FOREIGN KEY (Customer_ID) REFERENCES CUSTOMER(Customer_ID),
+ FOREIGN KEY (Container_Serial_Number) REFERENCES
+CONTAINER(Container_Serial_Number)
+);
+CREATE TABLE PORT_CHARGES (
+ Charge_ID INT PRIMARY KEY AUTO_INCREMENT,
+ Port_Code CHAR(5),
+ Ship_ID INT,
+ Docking_Duration INT,
+ FOREIGN KEY (Port_Code) REFERENCES PORT(Port_Code),
+ FOREIGN KEY (Ship_ID) REFERENCES CONTAINER_SHIP(Ship_ID)
+);
